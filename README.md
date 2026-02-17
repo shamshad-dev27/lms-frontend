@@ -43,3 +43,8 @@ export default defineConfig({
 @import "tailwindcss";
 
 ```
+
+### Required library 
+```
+npm install @reduxjs/toolkit react-redux react-router-dom react-icon react-chartjs-2 chart.js daisyui axios react-hot-toast
+```
