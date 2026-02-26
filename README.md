@@ -48,3 +48,19 @@ export default defineConfig({
 ```
 npm install @reduxjs/toolkit react-redux react-router-dom react-icon react-chartjs-2 chart.js daisyui axios react-hot-toast
 ```
+### eslint 
+
+```
+1. VS Code Extension install karo
+        ↓
+2. Package install karo (npm install)
+        ↓
+3. eslint.config.js configure karo
+        ↓
+4. settings.json configure karo
+        ↓
+5. Reload Window
+        ↓
+6. Done! 🚀
+
+```
