@@ -41,6 +41,8 @@ export default defineConfig({
 3.import the tailwindcss in index.css that is import in your main.jsx 
 ```
 @import "tailwindcss";
+@import "tailwindcss";
+@plugin  "daisyui";
 
 ```
 

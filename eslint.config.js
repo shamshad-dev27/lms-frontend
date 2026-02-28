@@ -1,6 +1,7 @@
 import js from '@eslint/js'
 import { defineConfig, globalIgnores } from 'eslint/config'
 import reactHooks from 'eslint-plugin-react-hooks'
+import * as react from 'eslint-plugin-react'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import globals from 'globals'
@@ -13,9 +14,11 @@ export default defineConfig([
       js.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
+      react.configs.flat.recommended,
     ],
     plugins: {
       'simple-import-sort': simpleImportSort,
+      'react': react, 
     },
     languageOptions: {
       ecmaVersion: 2020,
@@ -29,6 +32,7 @@ export default defineConfig([
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
       'simple-import-sort/imports': 'error',
+      'react/prop-types': 'off',
       'simple-import-sort/exports': 'error',
     },
   },
