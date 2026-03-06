@@ -73,7 +73,7 @@ const role =useSelector((state)=> state?.auth?.role);
                             <Link to="/login">Login</Link>
                          </button>
                          <button className=' btn btn-secondary  py-1 font-semibold rounded-md w-1/2'>
-                            <Link to="/Signup">Signup</Link>
+                            <Link to="/signup">Signup</Link>
                          </button>
                         </div>
                         </li>
