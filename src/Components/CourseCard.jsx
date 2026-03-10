@@ -9,7 +9,7 @@ function CourseCard({data}){
             <img src={data?.thumbnail?.secure_url}
             // onError={(e) => e.target.src = '/default-course.png'}
             alt="course thumbnail"
-            className="h-48 w-full rounded-tl-lg rounded-tr-lg group-hover:scale-[1,2] transition-all ease-in-out duration-300" 
+            className="h-48 w-full rounded-tl-lg rounded-tr-lg group-hover:scale-125 transition-all ease-in-out duration-300" 
             />
             <div className="p-3 space-y-1 text-white">
              <h2 className="text-xl font-bold text-yellow-500 line-clamp-2">
