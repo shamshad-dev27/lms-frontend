@@ -58,6 +58,11 @@ const role =useSelector((state)=> state?.auth?.role);
                         <Link to="/admin/dashboard">Admin DashBoard</Link>
                      </li>
                     )}
+                    {isLoggedIn&& role==="ADMIN"&& (
+                     <li>
+                        <Link to="/course/create">Create New course</Link>
+                     </li>
+                    )}
                     <li>
                         <Link to="/courses">All courses</Link>
                     </li>

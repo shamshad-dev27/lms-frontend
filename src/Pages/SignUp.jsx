@@ -87,7 +87,7 @@ import { isEmail, isPassword } from "../Helper/RegexMatcher";
         <label htmlFor="image_upload" className="cursor-pointer w-25 m-auto">
             {PreviewImage?<img className="w-24 h-24 m-auto rounded-full" src={PreviewImage} />:<BsPersonCircle className="w-24 h-24 m-auto rounded-full"/>}
         </label>
-        <input  onChange={getImage} className="hidden" type="file" name="avatar" about=".jpg, .jpag, .png, .svg" id="image_upload"  />
+        <input  onChange={getImage} className="hidden" type="file" name="avatar" accept=".jpg, .jpeg, .png, .svg" id="image_upload"  />
         
      <div className="flex flex-col gap-1">
           <label htmlFor="fullName" className="semibold">Name</label>
