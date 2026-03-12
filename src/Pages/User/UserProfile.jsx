@@ -25,7 +25,7 @@ function UserProfile(){
          <button> Change Password</button>
           </Link>
           <Link 
-          to="/changepassword"
+          to="/user/editProfile"
           className="w-1/2 bg-yellow-600 hover:bg-yellow-500 transition ease-in-out duration-300 rounded-sm cursor-pointer py-2 font-semibold text-center">
           <button>Edit Profile</button>
           </Link>
