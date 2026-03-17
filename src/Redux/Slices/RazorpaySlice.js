@@ -11,7 +11,7 @@ const initialState={
     monthlySaleRecord:[]
 }
 
-const getRazorPayId=createAsyncThunk("/razorPay/getId",async ()=>{
+ export const getRazorPayId=createAsyncThunk("/razorPay/getId",async ()=>{
     try{
          const response=await axiosInstance.get("/payments/razorpay-key");
          return response.data;
@@ -19,7 +19,7 @@ const getRazorPayId=createAsyncThunk("/razorPay/getId",async ()=>{
         toast.error("faile to load data");
     }
 })
-const purchaseCourseBundle=createAsyncThunk("/purchaseCourse",async ()=>{
+export const purchaseCourseBundle=createAsyncThunk("/purchaseCourse",async ()=>{
     try{
          const response=await axiosInstance.post("/payments/subscribe");
          return response.data;
@@ -27,7 +27,7 @@ const purchaseCourseBundle=createAsyncThunk("/purchaseCourse",async ()=>{
         toast.error(error?.response?.data?.message);
     }
 })
-const verifyUserPayment=createAsyncThunk("/payment/verify",async (data)=>{
+ export const verifyUserPayment=createAsyncThunk("/payment/verify",async (data)=>{
     try{
          const response=await axiosInstance.post("/payments/verify",{
             razorpay_payment_id:data.razorpay_payment_id,
@@ -39,7 +39,7 @@ const verifyUserPayment=createAsyncThunk("/payment/verify",async (data)=>{
         toast.error(error?.response?.data?.message);
     }
 })
-const getPaymentRecode=createAsyncThunk("/payment/recode",async ()=>{
+export const getPaymentRecode=createAsyncThunk("/payment/recode",async ()=>{
     try{
          const response= axiosInstance.get("/payments?count=100");
          toast.promise(response,{
@@ -54,7 +54,7 @@ const getPaymentRecode=createAsyncThunk("/payment/recode",async ()=>{
         toast.error("Operation failed ");
     }
 })
-const cancelCourseBundle=createAsyncThunk("/payment/cancel",async ()=>{
+export const cancelCourseBundle=createAsyncThunk("/payment/cancel",async ()=>{
     try{
          const response= axiosInstance.post("/payments/unsubscribe");
          toast.promise(response,{
@@ -79,7 +79,23 @@ const razorPaySlice=createSlice({
             state.key=action?.payload?.key;
 
         })
-
+        .addCase(purchaseCourseBundle.fulfilled,(state,action)=>{
+            state.subscription_id=action?.payload?.subscription_id;
+        })
+       .addCase(verifyUserPayment.fulfilled,(state,action)=>{
+           toast.success(action?.payload?.message);
+         state.isPaymentVerified=action?.payload?.success;
+       })
+       .addCase(verifyUserPayment.rejected,(state,action)=>{
+           toast.success(action?.payload?.message);
+         state.isPaymentVerified=action?.payload?.success;
+       })
+       .addCase(getPaymentRecode.fulfilled,(state,action)=>{
+          
+         state.allPayments=action?.payload?.allPayments;
+         state.finalMonth=action?.payload?.finalMonth;
+         state.monthlySaleRecord=action?.payload?.monthlySaleRecord;
+       })
     }
 })
 
