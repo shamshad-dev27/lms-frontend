@@ -18,10 +18,13 @@ import EditProfile from './Pages/User/EditProfile';
 import Checkout from './Pages/Payment/Checkout';
 import CheckoutSuccess from './Pages/Payment/CheckoutSuccess';
 import CheckoutFailure from './Pages/Payment/CheckoutFailure';
+import DisplayLecture from './Pages/Dashboard/DisplayLecture';
+import AddLecture from './Pages/Dashboard/AddLecture';
+import AdminDashboard from './Pages/Dashboard/AdminDashboard';
 function App() {
   return (
    <>
-     <Toaster />
+     <Toaster position="top-right" />
    <Routes>
     <Route path="/" element={<HomePage/>}/> 
     <Route path="/about" element={<AboutUs/>}/> 
@@ -32,7 +35,9 @@ function App() {
     <Route path="/signup" element={<SignUp/>}/> 
     <Route path="/login" element={<Login/>}/> 
     <Route element={<RequireAuth allowedRole={["ADMIN"]} />}>
-   <Route path="/course/create" element={<CreateCourse/>}/> 
+   <Route path="/course/create" element={<CreateCourse/>}/>
+    <Route path="/course/addlecture"element={<AddLecture/>}/> 
+    <Route path="/admin/dashboard"element={<AdminDashboard/>}/> 
     </Route> 
     <Route element={<RequireAuth allowedRole={["ADMIN","User"]} />}>
      <Route path="/user/profile"element={<UserProfile/>}/> 
@@ -40,6 +45,7 @@ function App() {
      <Route path="/checkout"element={<Checkout/>}/> 
      <Route path="/checkout/success"element={<CheckoutSuccess/>}/> 
      <Route path="/checkout/fail"element={<CheckoutFailure/>}/> 
+     <Route path="/course/displaylectures"element={<DisplayLecture/>}/>  
     </Route> 
     
     <Route path="/*" element={<NotFoundPage/>}/> 

@@ -7,7 +7,6 @@ function CourseDescription(){
     const {state}=useLocation();
     const navigate=useNavigate();
     const {role,data}=useSelector((state)=>state?.auth);
-    console.log(role);
     useEffect(()=>{
     },[]);
     return (
@@ -32,8 +31,8 @@ function CourseDescription(){
                        </p>
                 </div>
                 
-                 {role==="ADMIN"||data?.subscription?.status==="ACTIVE"  ?(
-                <button className="py-3 px-5 w-full bg-yellow-600 font-bold text-xl rounded-md hover:bg-yellow-500 transition ease-in-out duration-300">
+                 {role==="ADMIN"||data?.subscription?.status==="active"?(
+                <button onClick={()=> navigate("/course/displaylectures", {state:{...state}})} className="py-3 px-5 w-full bg-yellow-600 font-bold text-xl rounded-md hover:bg-yellow-500 transition ease-in-out duration-300">
                     Watch lecture
                 </button>
             ):(

@@ -11,10 +11,12 @@ function UserProfile(){
     const dispatch=useDispatch();
     const navigate=useNavigate();
     async function handleSubscribtion(){
-        await dispatch(cancelCourseBundle());
+       const res = await dispatch(cancelCourseBundle());
+    
+    if (res?.payload?.success) {
         await dispatch(getUserData());
-        toast.success("cancellation completed!");
-        navigate("/")
+        navigate("/");
+    }
     }
  return(
    <HomeLayout>
