@@ -21,6 +21,7 @@ import CheckoutFailure from './Pages/Payment/CheckoutFailure';
 import DisplayLecture from './Pages/Dashboard/DisplayLecture';
 import AddLecture from './Pages/Dashboard/AddLecture';
 import AdminDashboard from './Pages/Dashboard/AdminDashboard';
+import ChangePassword from './Pages/User/ChangePassword';
 function App() {
   return (
    <>
@@ -46,13 +47,16 @@ function App() {
      <Route path="/checkout/success"element={<CheckoutSuccess/>}/> 
      <Route path="/checkout/fail"element={<CheckoutFailure/>}/> 
      <Route path="/course/displaylectures"element={<DisplayLecture/>}/>  
+     <Route path="/changepassword"element={<ChangePassword/>}/>  
     </Route> 
     
     <Route path="/*" element={<NotFoundPage/>}/> 
    </Routes>
-  
+
    </>
   );
 }
 
 export default App
+
+

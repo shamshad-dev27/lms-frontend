@@ -22,24 +22,34 @@ export const getCourseLecture=createAsyncThunk("course/lecture/get" ,async (CId)
     }
 
 })
-export const AddCourseLecture=createAsyncThunk("course/lecture/add" ,async (data)=>{
-    try{
-        const formData=new FormData();
-        formData.append("title",data.title)
-        formData.append("description",data.description)
-        formData.append("lecture",data.lecture)
-                const response=axiosInstance.post(`/courses/${data.id}`,formData);
-                toast.promise(response,{
-                    loading:"Adding course  lecture",
-                    success:"Add course  lecture successfully!",
-                    error:"Fail to add the course lecture"
-                })
-                return (await response).data;
-    }catch(error){
-        toast.error(error?.response?.data?.message);
-    }
+export const AddCourseLecture = createAsyncThunk("course/lecture/add", async (data) => {
+    try {
+        const formData = new FormData();
+        formData.append("title", data.title);
+        formData.append("description", data.description);
+        formData.append("lecture", data.lecture);
 
-})
+        const response = axiosInstance.post(`/courses/${data.id}`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
+            timeout: 0
+        });
+
+        toast.promise(response, {
+            loading: "Adding course lecture (it may take a few minutes)...",
+            success: "Add course lecture successfully!",
+            error: "Fail to add the course lecture"
+        });
+
+        const res = await response;
+        return res.data;
+
+    } catch (error) {
+        toast.error(error?.response?.data?.message || "Something went wrong");
+        throw error;
+    }
+});
 export const DeleteCourseLecture=createAsyncThunk("course/lecture/delete" ,async (data)=>{
     try{
                 const response=axiosInstance.delete(`/courses/${data.courseId}/lecture/${data.lectureId}`);

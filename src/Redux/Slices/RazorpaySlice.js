@@ -44,7 +44,7 @@ export const verifyUserPayment = createAsyncThunk("/payment/verify", async (data
 })
 export const getPaymentRecode = createAsyncThunk("/payment/recode", async () => {
     try {
-        const response = axiosInstance.get("/payments?count=100");
+        const response = axiosInstance.get("/payments/?count=100");
         toast.promise(response, {
             loading: "wait ! All recodes are loading",
             success: (data) => {
@@ -104,7 +104,6 @@ const razorPaySlice = createSlice({
                 toast.error("Failed to cancel subscription");
             })
             .addCase(getPaymentRecode.fulfilled, (state, action) => {
-
                 state.allPayments = action?.payload?.allPayments;
                 state.finalMonth = action?.payload?.finalMonth;
                 state.monthlySaleRecord = action?.payload?.monthlySaleRecord;

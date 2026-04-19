@@ -1,9 +1,29 @@
 @import "tailwindcss";
 @import "tailwindcss";
-@plugin  "daisyui";
+@plugin "daisyui";
 
-body{
+body {
     margin: auto;
     /* max-width: 1440px; */
-    position:relative;
+    position: relative;
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.animate-float-slow {
+    animation: float 6s ease-in-out infinite;
 }

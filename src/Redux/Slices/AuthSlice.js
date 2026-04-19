@@ -2,10 +2,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import axiosInstance from "../../Helper/axiosInstance";
 
-const initialState={
-    isLoggedIn:localStorage.getItem('isLoggedIn')||false,
-    role:localStorage.getItem('role')|| "",
-    data:localStorage.getItem("data")!==undefined ?JSON.parse(localStorage.getItem("data")) :{},
+const initialState = {
+    isLoggedIn: localStorage.getItem('isLoggedIn') === 'true' || false,
+    role: localStorage.getItem('role') || "",
+    data: (localStorage.getItem('data') && localStorage.getItem('data') !== "undefined") 
+        ? JSON.parse(localStorage.getItem('data')) 
+        : {}
 }
 
 export const createAccount=createAsyncThunk(
@@ -85,7 +87,28 @@ export const getUserData=createAsyncThunk(
             toast.error(err.message);
         }
     }
-)
+);
+
+export const changepassword = createAsyncThunk(
+    '/user/changePassword', 
+    async (data, { rejectWithValue }) => {
+        try {
+            const res = axiosInstance.post('/user/change-password', data);
+
+            toast.promise(res, {
+                loading: "Updating password...",
+                success: (response) => response.data?.message || "Password changed successfully!",
+                error: (err) => err?.response?.data?.message || "Failed to change password"
+            });
+
+            const response = await res;
+            return response.data;
+
+        } catch (err) {
+            return rejectWithValue(err?.response?.data);
+        }
+    }
+);
 
 const authSlice=createSlice({
     name:'auth',
