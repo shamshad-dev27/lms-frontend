@@ -5,92 +5,92 @@ import axiosInstance from "../../Helper/axiosInstance";
 const initialState = {
     isLoggedIn: localStorage.getItem('isLoggedIn') === 'true' || false,
     role: localStorage.getItem('role') || "",
-    data: (localStorage.getItem('data') && localStorage.getItem('data') !== "undefined") 
-        ? JSON.parse(localStorage.getItem('data')) 
+    data: (localStorage.getItem('data') && localStorage.getItem('data') !== "undefined")
+        ? JSON.parse(localStorage.getItem('data'))
         : {}
 }
 
-export const createAccount=createAsyncThunk(
+export const createAccount = createAsyncThunk(
     "/auth/signup", async (data) => {
-        try{
-            const res= axiosInstance.post("/user/register",data);
-            toast.promise(res,{
-                loading:"Wait ! creating your account",
-                success:(data)=>{
+        try {
+            const res = axiosInstance.post("/user/register", data);
+            toast.promise(res, {
+                loading: "Wait ! creating your account",
+                success: (data) => {
                     return data?.data?.message;
                 },
-                error:"Failed to create account"
+                error: "Failed to create account"
             })
             return (await res).data;
-        }catch(err){
+        } catch (err) {
             toast.error(err?.response?.data?.message);
         }
     }
 )
-export const LoginUser=createAsyncThunk(
+export const LoginUser = createAsyncThunk(
     "/auth/login", async (data) => {
-        try{
-            const res= axiosInstance.post("/user/login",data);
-            toast.promise(res,{
-                loading:"Wait ! authentication in progress...",
-                success:(data)=>{
+        try {
+            const res = axiosInstance.post("/user/login", data);
+            toast.promise(res, {
+                loading: "Wait ! authentication in progress...",
+                success: (data) => {
                     return data?.data?.message;
                 },
-                error:"Failed to login"
+                error: "Failed to login"
             })
             return (await res).data;
-        }catch(err){
+        } catch (err) {
             toast.error(err?.response?.data?.message);
         }
     }
 )
-export const logout=createAsyncThunk(
+export const logout = createAsyncThunk(
     "/auth/logout", async () => {
-        try{
-            const res= axiosInstance.get("/user/logout");
-            toast.promise(res,{
-                loading:"Wait ! logout in progress",
-                success:(data)=>{
+        try {
+            const res = axiosInstance.get("/user/logout");
+            toast.promise(res, {
+                loading: "Wait ! logout in progress",
+                success: (data) => {
                     return data?.data?.message;
                 },
-                error:"Failed to logout"
+                error: "Failed to logout"
             })
             return (await res).data;
-        }catch(err){
+        } catch (err) {
             toast.error(err?.response?.data?.message);
         }
     }
 )
-export const updataProfile=createAsyncThunk(
+export const updataProfile = createAsyncThunk(
     "/user/update/profile", async (data) => {
-        try{
-            const res= axiosInstance.put("/user/update",data);
-            toast.promise(res,{
-                loading:"Wait ! Updating your profile",
-                success:(data)=>{
+        try {
+            const res = axiosInstance.put("/user/update", data);
+            toast.promise(res, {
+                loading: "Wait ! Updating your profile",
+                success: (data) => {
                     return data?.data?.message;
                 },
-                error:"Failed to Update profile"
+                error: "Failed to Update profile"
             })
             return (await res).data;
-        }catch(err){
+        } catch (err) {
             toast.error(err?.response?.data?.message);
         }
     }
 )
-export const getUserData=createAsyncThunk(
+export const getUserData = createAsyncThunk(
     "/user/details", async () => {
-        try{
-            const res= axiosInstance.get("user/me");
+        try {
+            const res = axiosInstance.get("user/me");
             return (await res).data;
-        }catch(err){
+        } catch (err) {
             toast.error(err.message);
         }
     }
 );
 
 export const changepassword = createAsyncThunk(
-    '/user/changePassword', 
+    '/user/changePassword',
     async (data, { rejectWithValue }) => {
         try {
             const res = axiosInstance.post('/user/change-password', data);
@@ -110,35 +110,38 @@ export const changepassword = createAsyncThunk(
     }
 );
 
-const authSlice=createSlice({
-    name:'auth',
+const authSlice = createSlice({
+    name: 'auth',
     initialState,
-    reducers:{},
-    extraReducers:(builder)=>{
-        builder.addCase(LoginUser.fulfilled,(state,action)=>{
-            localStorage.setItem("data",JSON.stringify(action?.payload?.user));
-            localStorage.setItem("isLoggedIn",true);
-            localStorage.setItem("role",action?.payload?.user?.role);
-            state.isLoggedIn=true;
-            state.data=action?.payload?.user;
-            state.role=action?.payload?.user?.role;
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(LoginUser.fulfilled, (state, action) => {
+            if (action?.payload?.token) {
+                localStorage.setItem("token", action.payload.token);
+            }
+            localStorage.setItem("data", JSON.stringify(action?.payload?.user));
+            localStorage.setItem("isLoggedIn", true);
+            localStorage.setItem("role", action?.payload?.user?.role);
+            state.isLoggedIn = true;
+            state.data = action?.payload?.user;
+            state.role = action?.payload?.user?.role;
         })
-        .addCase(logout.fulfilled, (state)=>{
-            localStorage.clear();
-             state.isLoggedIn=false;
-            state.data={};
-            state.role="";
+            .addCase(logout.fulfilled, (state) => {
+                localStorage.clear();
+                state.isLoggedIn = false;
+                state.data = {};
+                state.role = "";
 
-        })
-        .addCase(getUserData.fulfilled,(state,action)=>{
-            if(!action?.payload?.user)  return;
-            localStorage.setItem("data",JSON.stringify(action?.payload?.user));
-            localStorage.setItem("isLoggedIn",true);
-            localStorage.setItem("role",action?.payload?.user?.role);
-            state.isLoggedIn=true;
-            state.data=action?.payload?.user;
-            state.role=action?.payload?.user?.role;
-        })
+            })
+            .addCase(getUserData.fulfilled, (state, action) => {
+                if (!action?.payload?.user) return;
+                localStorage.setItem("data", JSON.stringify(action?.payload?.user));
+                localStorage.setItem("isLoggedIn", true);
+                localStorage.setItem("role", action?.payload?.user?.role);
+                state.isLoggedIn = true;
+                state.data = action?.payload?.user;
+                state.role = action?.payload?.user?.role;
+            })
     }
 });
 

@@ -3,21 +3,22 @@ import { createSlice } from "@reduxjs/toolkit"
 import toast from "react-hot-toast";
 import axiosInstance from "../../Helper/axiosInstance";
 
-const initialState={
-    lecture:[],
+const initialState = {
+    lecture: [],
 
 }
 
-export const getCourseLecture=createAsyncThunk("course/lecture/get" ,async (CId)=>{
-    try{
-                const response=axiosInstance.get(`/courses/${CId}`);
-                toast.promise(response,{
-                    loading:"Fatching the lecture",
-                    success:"Lecture Fatch the lecture successfully!",
-                    error:"Fail to load the lecture"
-                })
-                return (await response).data;
-    }catch(error){
+export const getCourseLecture = createAsyncThunk("course/lecture/get", async (CId) => {
+    try {
+        const response = axiosInstance.get(`/courses/${CId}`);
+        toast.promise(response, {
+            loading: "Fatching the lecture",
+            success: "Lecture Fatch the lecture successfully!",
+            error: "Fail to load the lecture"
+        })
+        const res = await response;
+        return res.data;
+    } catch (error) {
         toast.error(error?.response?.data?.message);
     }
 
@@ -50,31 +51,31 @@ export const AddCourseLecture = createAsyncThunk("course/lecture/add", async (da
         throw error;
     }
 });
-export const DeleteCourseLecture=createAsyncThunk("course/lecture/delete" ,async (data)=>{
-    try{
-                const response=axiosInstance.delete(`/courses/${data.courseId}/lecture/${data.lectureId}`);
-                toast.promise(response,{
-                    loading:"Deleting course  lecture",
-                    success:"Delete course  lecture successfully!",
-                    error:"Fail to Delete the course lecture"
-                })
-                return (await response).data;
-    }catch(error){
+export const DeleteCourseLecture = createAsyncThunk("course/lecture/delete", async (data) => {
+    try {
+        const response = axiosInstance.delete(`/courses/${data.courseId}/lecture/${data.lectureId}`);
+        toast.promise(response, {
+            loading: "Deleting course  lecture",
+            success: "Delete course  lecture successfully!",
+            error: "Fail to Delete the course lecture"
+        })
+        return (await response).data;
+    } catch (error) {
         toast.error(error?.response?.data?.message);
     }
 
 })
 
-const LectrueSlice=createSlice({
-    name:"Lecture",
+const LectrueSlice = createSlice({
+    name: "Lecture",
     initialState,
-    reducers:{},
-    extraReducers:(builder)=>{
-            builder.addCase(getCourseLecture.fulfilled,(state,action)=>{
-                state.lecture = action?.payload?.lectures || action?.payload?.course?.lectures || [];
-            })
-            .addCase(AddCourseLecture.fulfilled,(state,action)=>{
-                 state.lecture = action?.payload?.course?.lectures || [];
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(getCourseLecture.fulfilled, (state, action) => {
+            state.lecture = action?.payload?.lectures || action?.payload?.course?.lectures || [];
+        })
+            .addCase(AddCourseLecture.fulfilled, (state, action) => {
+                state.lecture = action?.payload?.course?.lectures || [];
             })
     }
 })
