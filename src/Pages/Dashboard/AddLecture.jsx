@@ -14,7 +14,7 @@ function AddLecture() {
 
     const [inputData, setInputData] = useState({
         id: courseDetail?._id,
-        lecture: undefined,
+        lecture: null, // Initialized as null for binary data
         title: "",
         description: "",
         videoSrc: ""
@@ -42,17 +42,27 @@ function AddLecture() {
 
     async function onFromsubmit(e) {
         e.preventDefault();
+        
+        // Validation
         if (!inputData.lecture || !inputData.title || !inputData.description) {
             toast.error("All fields are mandatory");
             return;
         }
 
-        const response = await dispatch(AddCourseLecture(inputData));
+        // CRITICAL FIX: Convert to FormData for File Upload
+        const formData = new FormData();
+        formData.append("title", inputData.title);
+        formData.append("description", inputData.description);
+        formData.append("lecture", inputData.lecture); // Matches your multer field name
+        formData.append("id", inputData.id);
+
+        const response = await dispatch(AddCourseLecture(formData));
+
         if (response?.payload?.success) {
             navigate(-1);
             setInputData({
                 id: courseDetail._id,
-                lecture: undefined,
+                lecture: null,
                 title: "",
                 description: "",
                 videoSrc: ""
@@ -70,10 +80,8 @@ function AddLecture() {
         <HomeLayout>
             <div className="min-h-[90vh] flex flex-col justify-center items-center bg-[#020617] px-4 py-10">
                 
-                {/* Form Card */}
                 <div className="flex flex-col gap-6 p-8 bg-slate-900/40 backdrop-blur-xl border border-white/10 w-full max-w-md rounded-2xl shadow-2xl relative overflow-hidden">
                     
-                    {/* Header */}
                     <header className="flex justify-center items-center relative">
                         <button 
                             className="absolute left-0 text-2xl text-yellow-500 hover:text-yellow-400 transition-colors" 
@@ -88,7 +96,6 @@ function AddLecture() {
 
                     <form onSubmit={onFromsubmit} className="flex flex-col gap-5">
                         
-                        {/* Title Input */}
                         <div className="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
                             <label htmlFor="title">Lecture Title</label>
                             <input 
@@ -97,12 +104,11 @@ function AddLecture() {
                                 id="title"
                                 placeholder="E.g. Introduction to React"
                                 onChange={handleInputChange}
-                                className="bg-slate-800/50 px-4 py-2.5 rounded-lg border border-slate-700 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all placeholder:text-slate-500 font-normal"
+                                className="bg-slate-800/50 px-4 py-2.5 rounded-lg border border-slate-700 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all placeholder:text-slate-500 font-normal text-white"
                                 value={inputData.title}
                             />
                         </div>
 
-                        {/* Description Input */}
                         <div className="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
                             <label htmlFor="description">Description</label>
                             <textarea 
@@ -110,12 +116,11 @@ function AddLecture() {
                                 id="description"
                                 placeholder="What will students learn in this video?"
                                 onChange={handleInputChange}
-                                className="bg-slate-800/50 px-4 py-2.5 rounded-lg border border-slate-700 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all placeholder:text-slate-500 resize-none h-24 overflow-y-auto font-normal"
+                                className="bg-slate-800/50 px-4 py-2.5 rounded-lg border border-slate-700 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all placeholder:text-slate-500 resize-none h-24 overflow-y-auto font-normal text-white"
                                 value={inputData.description}
                             />
                         </div>
 
-                        {/* Video Upload Section */}
                         <div className="space-y-1.5">
                             <p className="text-sm font-semibold text-slate-300">Lecture Video</p>
                             {inputData.videoSrc ? (
@@ -128,8 +133,9 @@ function AddLecture() {
                                         className="rounded-xl w-full aspect-video object-cover border border-yellow-500/30"
                                     />
                                     <button 
-                                        onClick={() => setInputData({...inputData, videoSrc: "", lecture: undefined})}
-                                        className="absolute top-2 right-2 bg-red-600 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+                                        type="button"
+                                        onClick={() => setInputData({...inputData, videoSrc: "", lecture: null})}
+                                        className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity text-xs"
                                     >
                                         Remove
                                     </button>
@@ -150,7 +156,6 @@ function AddLecture() {
                             )}
                         </div>
 
-                        {/* Submit Button */}
                         <button 
                             type="submit" 
                             className="mt-2 bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 rounded-xl shadow-lg shadow-yellow-600/20 transition-all active:scale-95 flex items-center justify-center gap-2"
