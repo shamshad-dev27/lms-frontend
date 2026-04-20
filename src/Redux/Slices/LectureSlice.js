@@ -71,10 +71,10 @@ const LectrueSlice=createSlice({
     reducers:{},
     extraReducers:(builder)=>{
             builder.addCase(getCourseLecture.fulfilled,(state,action)=>{
-                state.lecture=action?.payload?.lectures||action?.payload?.course?.lectures;
+                state.lecture = action?.payload?.lectures || action?.payload?.course?.lectures || [];
             })
             .addCase(AddCourseLecture.fulfilled,(state,action)=>{
-                  state.lecture=action?.payload?.course?.lecture;
+                 state.lecture = action?.payload?.course?.lectures || [];
             })
     }
 })
