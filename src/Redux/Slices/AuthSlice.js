@@ -11,25 +11,21 @@ const initialState = {
 }
 
 export const createAccount = createAsyncThunk(
-    "/auth/signup", 
+    "/auth/signup",
     async (data) => {
         try {
-            // 1. Manually create FormData (kyunki image upload ho sakti hai)
             const formData = new FormData();
             formData.append("fullName", data.fullName);
-            formData.append("email", data.email);
+            formData.append("email", data.email);       
             formData.append("password", data.password);
-            
+
             if (data.avatar) {
                 formData.append("avatar", data.avatar);
             }
-            const res = axiosInstance.post("/user/register", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            });
 
-            // 3. Toast notifications
+            
+            const res = axiosInstance.post("/user/register", formData); 
+
             toast.promise(res, {
                 loading: "Wait! Creating your account...",
                 success: (response) => {
@@ -39,14 +35,12 @@ export const createAccount = createAsyncThunk(
                     return err?.response?.data?.message || "Failed to create account";
                 }
             });
-
             const response = await res;
             return response.data;
 
         } catch (err) {
-    
             toast.error(err?.response?.data?.message || "Something went wrong");
-            throw err; 
+            throw err;
         }
     }
 );
