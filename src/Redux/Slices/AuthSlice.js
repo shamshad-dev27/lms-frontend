@@ -12,19 +12,9 @@ const initialState = {
 
 export const createAccount = createAsyncThunk(
     "/auth/signup",
-    async (data) => {
+    async (data) => { 
         try {
-            const formData = new FormData();
-            formData.append("fullName", data.fullName);
-            formData.append("email", data.email);       
-            formData.append("password", data.password);
-
-            if (data.avatar) {
-                formData.append("avatar", data.avatar);
-            }
-
-            
-            const res = axiosInstance.post("/user/register", formData); 
+            const res = axiosInstance.post("/user/register", data);
 
             toast.promise(res, {
                 loading: "Wait! Creating your account...",
@@ -35,6 +25,7 @@ export const createAccount = createAsyncThunk(
                     return err?.response?.data?.message || "Failed to create account";
                 }
             });
+
             const response = await res;
             return response.data;
 
